@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:cursor="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularTable</title>
+    <link href ="style.css" rel="stylesheet" type="text/css">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src = "bower_components/jquery/dist/jquery.js"></script>
+    <script src = "bower_components/angular/angular.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.min.js"></script>
+    <script src = "bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src = "index.js"></script>
+</head>
+<body ng-app="myApp">
+<div class="container" ng-controller="MainCtrl as mc">
+    <h1>Get date from firebase.</br>
+    You can sort by click on column and filter by name and eyes color</h1>
+    <form class="form-inline right" name = "searchForm">
+        <div class="form-group">
+            <label for="searchName">Search Name</label>
+            <input type="text" class="form-control" id="searchName" placeholder="Find by Name" ng-model="searchByName.name"/>
+        </div>
+    </form>
+    <div>
+        <h3>Eyes color filter</h3>
+        <div class="btn-group">
+            <label class="btn btn-info" ng-class = "{'active': mc.radioModel.blue}" ng-click="mc.changeCheckColor('blue')">Blue</label>
+            <label class="btn btn-info" ng-class = "{'active': mc.radioModel.brown}" ng-click="mc.changeCheckColor('brown')">Brown</label>
+            <label class="btn btn-info" ng-class = "{'active': mc.radioModel.green}" ng-click="mc.changeCheckColor('green')">Green</label>
+        </div>
+    </div>
+    <table class = "table table-striped table-bordered table-hover">
+        <thead >
+        <tr ng-show = "mc.usersList.length">
+            <th ng-click="mc.orderBy('balance')">balance<span ng-class = "{'glyphicon glyphicon-triangle-bottom' : mc.order.balance,
+            'glyphicon glyphicon-triangle-top' : mc.reverse}" ng-show = mc.order.balance.length></span>
+            </th>
+            <th ng-click="mc.orderBy('age')">age<span ng-class = "{'glyphicon glyphicon-triangle-bottom' : mc.order.age,
+            'glyphicon glyphicon-triangle-top' : mc.reverse}" ng-show = mc.order.age.length></span>
+            </th>
+            <th ng-click="mc.orderBy('eyeColor')">eyeColor<span ng-class = "{'glyphicon glyphicon-triangle-bottom' : mc.order.eyeColor,
+            'glyphicon glyphicon-triangle-top' : mc.reverse}" ng-show = mc.order.eyeColor.length></span>
+            </th>
+            <th ng-click="mc.orderBy('name')">name<span ng-class = "{'glyphicon glyphicon-triangle-bottom' : mc.order.name,
+            'glyphicon glyphicon-triangle-top' : mc.reverse}" ng-show = mc.order.name.length></span>
+            </th>
+            <th ng-click="mc.orderBy('gender')">gender<span ng-class = "{'glyphicon glyphicon-triangle-bottom' : mc.order.gender,
+            'glyphicon glyphicon-triangle-top' : mc.reverse}" ng-show = mc.order.gender.length></span>
+            </th>
+            <th ng-click="mc.orderBy('company')">company<span ng-class = "{'glyphicon glyphicon-triangle-bottom' : mc.order.company,
+            'glyphicon glyphicon-triangle-top' : mc.reverse}" ng-show = mc.order.company.length></span>
+            </th>
+            <th ng-click="mc.orderBy('email')">email
+                <span ng-class = "{'glyphicon glyphicon-triangle-bottom' : mc.order.email,
+            'glyphicon glyphicon-triangle-top' : mc.reverse}" ng-show = mc.order.email.length></span>
+            </th>
+        </tr>
+        </thead>
+        <tr ng-repeat = "user in mc.usersList | orderBy : mc.orderedBy : mc.reverse | filter : searchByName | eyesColor: mc.radioModel">
+            <th>{{user.balance}}</th>
+            <th>{{user.age}}</th>
+            <th>{{user.eyeColor}}</th>
+            <th>{{user.name}}</th>
+            <th>{{user.gender}}</th>
+            <th>{{user.company}}</th>
+            <th>{{user.email}}</th>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
